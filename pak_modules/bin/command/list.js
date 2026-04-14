@@ -43,7 +43,7 @@ module.exports = async function (args, utils) {
     args._.shift();
     const { projectRoot } = utils;
     const targetType = args._.shift();
-    const findClosestPakProjectDirectory = require(`${projectRoot}/pak_modules/api/pak/nodejs/findClosestPakProjectDirectory.js`);
+    const findClosestPakProjectDirectory = require(`${projectRoot}/pak_modules/src/pak/nodejs/findClosestPakProjectDirectory.js`);
     const projectPath = await findClosestPakProjectDirectory(process.cwd());
     const pakModulesDir = path.resolve(projectPath, "pak_modules");
     const fixedCmdOptions = { stdio: "inherit" };

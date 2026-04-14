@@ -15,7 +15,7 @@ const main = async function() {
     console.log("[pak-compiler][trace] " + text);
   }
   const start = new Date();
-  trace("Start of: src/builder-for/pak-compiler.js");
+  trace("Start of: pak_compiler/builder-for/pak-compiler.js");
   const templateFile = path.resolve(__dirname + "/../../pak-compiler.template.js");
   const templateSource = await fs.promises.readFile(templateFile, "utf8");
   const snippets = [];
@@ -35,7 +35,7 @@ const main = async function() {
   fs.writeFileSync(`${__dirname}/../../pak-compiler.dist.js`, output, "utf8");
   const duration = ((new Date()) - start) / 1000;
   trace("Pak compiler compilation took: " + duration + " seconds");
-  trace("End of: src/builder-for/pak-compiler.js");
+  trace("End of: pak_compiler/builder-for/pak-compiler.js");
 };
 
 main();

@@ -4,7 +4,7 @@ const path = require("path");
 module.exports = async function (argsInput, utils) {
   try {
     const { projectRoot } = utils;
-    const findClosestPakProjectDirectory = require(`${projectRoot}/pak_modules/api/pak/nodejs/findClosestPakProjectDirectory.js`);
+    const findClosestPakProjectDirectory = require(`${projectRoot}/pak_modules/src/pak/nodejs/findClosestPakProjectDirectory.js`);
     const args = {
       entry: argsInput.entry && argsInput.entry.length ? argsInput.entry[0].replace(/\.js$/g, "") : "main",
       command: argsInput._[0] || "build",

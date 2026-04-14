@@ -6,7 +6,7 @@
     "pak": "pak_modules/dist/currently/cli.dist.js"
   },
   "scripts": {
-    "build:pak:compiler": "node src/builder-for/pak-compiler.js",
+    "build:pak:compiler": "node pak_compiler/builder-for/pak-compiler.js",
     "build:main": "pak build currently main",
     "build:cli": "pak build currently cli",
     "build:server": "pak build currently server",

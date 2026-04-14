@@ -20,10 +20,10 @@ const path = require("path");
 const projectRoot = path.resolve(__dirname, "../..");
 const PakCompilerPath = path.resolve(projectRoot, "pak-compiler.dist.js");
 const PakCompiler = require(PakCompilerPath);
-const colorsPath = path.resolve(projectRoot, "pak_modules/api/pak/nodejs/cmd/colors.js");
+const colorsPath = path.resolve(projectRoot, "pak_modules/src/pak/nodejs/cmd/colors.js");
 const colors = require(colorsPath);
 PakCompiler.global.setBasedir(path.resolve(projectRoot, "pak_modules"));
-const argumentsParser = require(PakCompiler.global.basedir + "/api/pak/nodejs/cmd/parseArgsIntoObject.js");
+const argumentsParser = require(PakCompiler.global.basedir + "/src/pak/nodejs/cmd/parseArgsIntoObject.js");
 const argv = [...process.argv];
 const args0 = argv.splice(2);
 if(args0.length === 0) {
