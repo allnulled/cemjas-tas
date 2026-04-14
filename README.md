@@ -178,7 +178,8 @@ Y los nombres de cada fichero que compone la clase importan porque de ellos depe
 
 En una clase, conviene separar cada propiedad y método en fichero suelto, y hacer grupos selectivos:
 
-- `Clase.js`: el constructor formalmente, pero la factory function que crea un objeto usando el prototype con `Object.create`.
+- `Clase.js`: la función constructora + su `prototype` modificado.
+- `Clase.constructor.js`: la función constructora.
 - `Clase.prototype.js`: objeto con todas las propiedades y métodos del prototipo
 - `Clase.prototype.*.js`: método dinámico
 - `Clase.*.js`: método o api estática

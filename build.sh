@@ -3,10 +3,4 @@
 # node pak_modules/bin/cli.js build currently
 
 # Ejecución de la aplicación:
-echo "[process] running currently"
-echo "[process] running currently"
-echo "[process] running currently"
-echo "[process] running currently"
-echo "[process] running currently"
-echo "[process] running currently"
 pak run currently -f bin
