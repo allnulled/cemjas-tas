@@ -1,0 +1,23 @@
+{
+  "name": "pemjas-tas",
+  "version": "1.0.0",
+  "main": "pak_modules/dist/currently/main.dist.js",
+  "bin": {
+    "pak": "pak_modules/dist/currently/cli.dist.js"
+  },
+  "scripts": {
+    "build:pak:compiler": "node src/builder-for/pak-compiler.js",
+    "build:main": "pak build currently main",
+    "build:cli": "pak build currently cli",
+    "build:server": "pak build currently server",
+    "build:client": "pak build currently client",
+    "build:gui": "pak build currently gui",
+    "build": "bash build",
+    "dev": "bash dev.sh",
+    "test": "node test/run.js"
+  },
+  "keywords": [],
+  "author": "allnulled",
+  "license": "WTFPL",
+  "description": ""
+}

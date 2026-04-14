@@ -1,0 +1,8 @@
+- [ ] El CLI
+   - [x] `pak build ${PROYECTO}`
+      - [x] `--file ${FICHERO=main.js}`
+   - [x] `pak run ${PROYECTO}`
+      - [x] `--file ${FICHERO=main.js}`
+   - [ ] `pak init ${PATH=.}`
+- [ ] Ampliar la compilación con:
+   - [ ] `Pak.file.to.string("some/path/with/drivers/and/local/options")`

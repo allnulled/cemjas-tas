@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>cemjas&plus;tas</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="cemjastas">cemjas+tas</h1>
+<p><strong>Cross-Environment and Modulable Javascript Application Standard + Trojanic Architecture Specification</strong>.</p>
+<p><img src="file:////home/carlos/Escritorio/Programas/pemjas-tas/logo-pemjastas.png" alt="logo"></p>
+<p>El <strong>cemjas+tas</strong> es una especificación de cómo hacer código para aplicaciones en JavaScript que procura:</p>
+<ul>
+<li>Múltiples entornos cubiertos desde 1 mismo código fuente (cross-environment)</li>
+<li>Con código altamente modulable (modulable)</li>
+<li>Con una arquitectura que facilita la comandación remota mutua entre 2 nodos (trojanic architecture).</li>
+</ul>
+<p>La siguiente especificación trata desde toolkit que hay que cubrir hasta especificidades en la redacción del código.</p>
+<h2 id="especificación">Especificación</h2>
+<p>A continuación se exponen las especificaciones de programación.</p>
+<h3 id="especificación-1-el-loop-booster">Especificación 1: El loop booster</h3>
+<p>Aquí uso:</p>
+<ul>
+<li>detecto cambios y cronometro comandos con <a href="https://github.com/allnulled/refrescador">allnulled@refrescador</a>.</li>
+<li>compilo el javascript modulable con <a href="https://github.com/allnulled/pak-compiler">allnulled@pak-compiler</a>.</li>
+</ul>
+<p>Con las features que heredo de estos 2 proyectos ya tengo lo necesario para construir una <strong>cemjas compliant application</strong>.</p>
+<p>Pero no todo vale, y por eso las especificaciones siguen.</p>
+<h3 id="especificación-2-los-entry-points">Especificación 2: Los entry points</h3>
+<p>El <strong>Cemjas TAS (Trojanic Architecture Specification)</strong> propone de base los siguientes <strong>entry points</strong>:</p>
+<ul>
+<li><code>@{project}/bin.js</code>: programa para línea de comandos (nodejs)</li>
+<li><code>@{project}/server.js</code>: programa para hablar con sistema operativo (nodejs)</li>
+<li><code>@{project}/client.js</code>: programa para hablar con <code>server.js</code> (nodejs o web)</li>
+<li><code>@{project}/gui.js</code>: programa para hablar con interfaz gráfica web (web)</li>
+</ul>
+<p>Cada uno se compila independientemente de los demás, y solo usa los módulos que su parte demanda.</p>
+<p>Se esperan pues las rutas relativas:</p>
+<ul>
+<li><code>dist/@{project}/bin.dist.js</code></li>
+<li><code>dist/@{project}/server.dist.js</code></li>
+<li><code>dist/@{project}/client.dist.js</code></li>
+<li><code>dist/@{project}/gui.dist.js</code></li>
+<li><code>dist/@{project}/gui.dist.css</code></li>
+</ul>
+<h4 id="notas-de-los-entry-points">Notas de los entry points</h4>
+<ul>
+<li>El <code>bin</code> se espera que tenga un comando para despertar a 1 servidor único.</li>
+<li>El <code>server</code> se espera que sea único por sistema y reutilice los recursos entre cargas.</li>
+<li>El <code>client</code> se espera que sea basado en <code>socket-io.client.js</code> y vale igual para <code>nodejs</code> y <code>gui</code>.</li>
+<li>El <code>gui</code> se espera que sea tipo web normal</li>
+</ul>
+<h3 id="especificación-3-directorios-de-una-clase-descomponible">Especificación 3: Directorios de una clase descomponible</h3>
+<p>Las <code>class</code> de <code>ES06</code> hay que evitarlas porque rompen la <strong>modulabilidad</strong>.</p>
+<p>En su lugar se usan <code>object factories</code> que son funciones que devuelven un <code>Object</code> que ya tiene especificado su <code>prototype</code> (el método <code>Object.create</code> hace la función).</p>
+<h4 id="ficheros-js-de-clase">Ficheros js de clase</h4>
+<p>Y los nombres de cada fichero que compone la clase importan porque de ellos depende su <strong>modulabilidad</strong>.</p>
+<ul>
+<li><code>Clase.js</code>: el constructor formalmente, pero la factory function que crea un objeto usando el prototype con <code>Object.create</code>.</li>
+<li><code>Clase.prototype.js</code>: objeto con todas las propiedades y métodos del prototipo</li>
+<li><code>Clase.prototype.*.js</code>: método dinámico</li>
+<li><code>Clase.*.js</code>: método o api estática</li>
+<li><code>Clase.*.*.js</code>: método de api estática</li>
+</ul>
+<p>Tienes más modularidad, más agrupabilidad, más encontrabilidad, más documentabilidad, más estructura.</p>
+<h4 id="ficheros-satelitales-de-clase">Ficheros satelitales de clase</h4>
+<p>Cada fichero js, clase o no, método o no, puede tiene sus homólogos (comparten el nombre pero no la extensión) que conviven en el mismo directorio:</p>
+<ul>
+<li><code>*.md</code>: documentación adjunta</li>
+<li><code>*.test.js</code>: test adjunto</li>
+<li><code>*.*</code>: puedes inventarte otros, pero no serán oficiales</li>
+</ul>
+<p>Esto se hace así para que en el vscode, en las pestañas, te puedas guiar por el nombre resaltado.</p>
+<blockquote>
+<p>si llamas a todos los ficheros <code>index.js</code> luego tienes problemas al buscar entre pestañas con el vscode.</p>
+</blockquote>
+<p>Estos ficheros se utilizarán más adelante en otras herramientas satelitales del toolkit.</p>
+
+            
+            
+        </body>
+        </html>
