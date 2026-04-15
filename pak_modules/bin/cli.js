@@ -12,6 +12,10 @@ const commandsSchema = {
   run: {
     entry: { alias: "e" },
     mode: { alias: "m" },
+  },
+  test: {
+    all: { alias: "a" },
+    entry: { alias: "e" },
   }
 };
 

@@ -27,7 +27,11 @@ La siguiente especificación trata desde toolkit que hay que cubrir hasta especi
       - [Especificación 3.1: cuándo sí usar class de ES06](#especificación-31-cuándo-sí-usar-class-de-es06)
       - [Especificación 3.2: cómo replicar todo el comportamiento de class](#especificación-32-cómo-replicar-todo-el-comportamiento-de-class)
     - [Especificación 4: Ficheros js](#especificación-4-ficheros-js)
-    - [Especificación 5: Ficheros satelitales de clase](#especificación-5-ficheros-satelitales-de-clase)
+    - [Especificación 5: Ficheros satelitales al js](#especificación-5-ficheros-satelitales-al-js)
+    - [Especificación 6: Soporte para tests rápidos](#especificación-6-soporte-para-tests-rápidos)
+    - [Especificación 7.1: Test Framework Provision Compliance](#especificación-71-test-framework-provision-compliance)
+    - [Especificación 7.2: Test-Per-File Development Compliance](#especificación-72-test-per-file-development-compliance)
+    - [Especificación 7: Errores detallados](#especificación-7-errores-detallados)
 
 ## Especificación
 
@@ -72,11 +76,56 @@ Se esperan pues las rutas relativas:
 
 ### Especificación 3: Ficheros de una clase descomponible
 
-Las `class` de `ES06` hay que evitarlas porque rompen la **modulabilidad**.
+Esta especificación trata de fijar cómo describir clases de forma sistemática.
 
-> Con `class` puedes recuperar los métodos gracias a `Clase.prototype.metodo` pero estás obligado a importar toda la clase aunque solo quieras una parte de ella.
+Las `class` de `ES06` es un subconjunto de usos de los `prototype` de `ES05`.
 
-En su lugar se usan `object factories` que son funciones que devuelven un `Object` que ya tiene especificado su `prototype` (el método `Object.create` hace la función).
+Con `prototype` podemos hacer:
+
+```js
+module.exports = base => Object.create(Object.assign(base, proto1, proto2, proto3));
+```
+
+Con `class` no podemos hacer:
+
+```js
+module.exports = class extends proto1, proto2, proto3 {};
+```
+
+Si hemos entendido bien, la idea de reaprovechar código va más con `prototype` que con `class`.
+
+Sin embargo, `class` aporta una claridad y explicidad del código que por seguro echaremos en falta si nos lanzamos al patrón `prototype`.
+
+Este es el punto medio donde explotas `class` en su máxima flexibilidad:
+
+```js
+const Clase1 = class extends ProtoBase {
+    propiedadUno = proto2.prototype.propiedadUno;
+    propiedadDos = proto2.prototype.propiedadDos;
+    propiedadTres = proto2.prototype.propiedadTres;
+    propiedadCuatro = proto2.prototype.propiedadCuatro;
+};
+Object.assign(Clase1.prototype, {
+    // Aquí tenemos el grupo de propiedades, pero en class no podemos intervenir, tenemos que definirlas después:
+    propiedadCinco: proto3.prototype.propiedadCinco,
+    propiedadSeis: proto3.prototype.propiedadSeis,
+    propiedadSiete: proto3.prototype.propiedadSiete,
+    propiedadOcho: proto3.prototype.propiedadOcho,
+});
+```
+
+Por todo esto, se recomienda mejor el uso de `prototype`, pero siendo consciente que:
+
+- `class` estandariza mayor legibilidad que `prototype`
+- `class` garantiza ciertas buenas prácticas de reutilización de código
+- `class` minimiza ciertas confusiones y malentendidos del uso de `prototype`
+- pero `class` rompe cierto patrón de reutilización si no lo encajas correctamente
+   - concretamente, la reutilización de conjuntos de propiedades y métodos
+   - que además sería la fórmula final con la cual uno compondría esquemas computables más rápido
+      - decorando clases con atributos
+      - TypeScript también manquea aquí con alguna feature que parece que sí, pero realmente tampoco
+      - Por tanto, `class` no está mal, pero tiene la puerta de las siguientes features sintácticas bloqueada
+         - y `prototype` no.
 
 #### Especificación 3.1: cuándo sí usar class de ES06
 
@@ -98,6 +147,8 @@ module.exports = class {
     getName() {
         return this.name;
     }
+    // versión reusable:
+    getSomething: Pak.require("path/to/method/getSomething.js");
 };
 ```
 
@@ -187,7 +238,7 @@ En una clase, conviene separar cada propiedad y método en fichero suelto, y hac
 
 Tienes más modularidad, más agrupabilidad, más encontrabilidad, más documentabilidad, más estructura.
 
-### Especificación 5: Ficheros satelitales de clase
+### Especificación 5: Ficheros satelitales al js
 
 Cada fichero js, clase o no, método o no, puede tener homólogos, ficheros que comparten el nombre pero no la extensión. Los ficheros homólogos oficiales de la especificación actual son:
 
@@ -197,3 +248,47 @@ Cada fichero js, clase o no, método o no, puede tener homólogos, ficheros que 
 
 Esto se hace así para que en el vscode, en las pestañas, te puedas guiar por el nombre resaltado, porque si llamas a todos los ficheros `index.js` luego tienes problemas al buscar entre pestañas con el vscode.
 
+### Especificación 6: Soporte para tests rápidos
+
+Puedes añadir *tests unitarios* en paralelo de 2 formas:
+
+- fichero satelital tipo: `@@/ruta/a/mi/Clase.test.js`
+- fichero de test tipo: `@@/test/ruta/a/mi/Clase.js`
+
+Uno sirve para prependizar el infijo y el otro para apendizarlo, pero hacen lo mismo.
+
+Para lanzar tests o compilar+ejecutar cualquier fichero, `pak test` te hace la función:
+
+```sh
+pak test src/ruta/a/mi/clase.js       # Este ejecuta la clase
+pak test test/src/ruta/a/mi/clase.js  # Este ejecuta el test
+pak test --all                        # Este ejecuta TODOS los tests en: "test/**/*.js" y "**/*.test.js"
+```
+
+### Especificación 7.1: Test Framework Provision Compliance
+
+La **TFP-Com o Test Framework Provision Compliance** obliga a tener 1 framework para tests por lo menos.
+
+- El módulo `src/cem/tester/TestCollection.js` se encarga de la capa programática (o API).
+   - Toolkit básico para testing desde programa
+- El comando `pak test fichero.js` y `pak test --all` se encarga de la capa operativa (o CLI).
+   - Comando básico para testing desde sistema operativo
+
+### Especificación 7.2: Test-Per-File Development Compliance
+
+La **TPFD-Com o Test-Per-File Development Compliance** obliga a dar la opción de testear cada fichero `js` con su propio test.
+
+- El comando `pak test fichero.js` y `pak test --all` se encarga de la capa operativa (o CLI).
+   - Permite con `--all` lanzar todos los comandos que:
+      - Empiecen con `test/**/*.js`
+      - Acaben con `**/*.test.js`
+
+### Especificación 7: Errores detallados
+
+Los errores de la aplicación pasan a consistir en un JSON que indica todos los detalles necesarios para informar del error.
+
+La forma de lanzar errores pasa a ser:
+
+```js
+throw Pak.require("src/cem/error/ErrorData.js").create({ detalle1: 1, detalle2: 2 })
+```
