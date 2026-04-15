@@ -26,6 +26,8 @@ La siguiente especificación trata desde toolkit que hay que cubrir hasta especi
     - [Especificación 3: Ficheros de una clase descomponible](#especificación-3-ficheros-de-una-clase-descomponible)
       - [Especificación 3.1: cuándo sí usar class de ES06](#especificación-31-cuándo-sí-usar-class-de-es06)
       - [Especificación 3.2: cómo replicar todo el comportamiento de class](#especificación-32-cómo-replicar-todo-el-comportamiento-de-class)
+      - [Especificación 3.3: herencia de rasgos al estilo Dart](#especificación-33-herencia-de-rasgos-al-estilo-dart)
+      - [Especificación 3.4: Fully Modulable Inheritance Compliance](#especificación-34-fully-modulable-inheritance-compliance)
     - [Especificación 4: Ficheros js](#especificación-4-ficheros-js)
     - [Especificación 5: Ficheros satelitales al js](#especificación-5-ficheros-satelitales-al-js)
     - [Especificación 6: Soporte para tests rápidos](#especificación-6-soporte-para-tests-rápidos)
@@ -222,6 +224,62 @@ Object.setPrototypeOf(Z, X);
 Se lee más complicado, pero permite 100% modularidad, lo demás queda intra-función.
 
 Así, `...rasgos` y `Object.assign(prot, rasgos)` serían 2 formas sencillas de hacer herencia horizontal.
+
+#### Especificación 3.3: herencia de rasgos al estilo Dart
+
+Dart utiliza un método muy concreto de herencia para poder:
+
+- definir múltiples `trait` independientes
+- aplicarlos a una `class` simultáneamente, consiguiendo herencia horizontal con verticalidad porque consigue...
+- mantener los `trait` en la cadena `prototype`
+   - por tanto, conseguir `traits prototype-compliant`
+   - y permitir el uso de `instanceof` con los traits también
+
+Se trata de un juego de factories de clases que acaban definiendo la clase final y cumpliendo con la herencia prototípica enmascarada por rasgos.
+
+No he podido encontrar `dart2js` y el método de compilación que usa `dartdevc compile js` genera un framework reflectivo intermedio, así que no puedo poner el ejemplo limpio.
+
+La crítica es que si la chain de abstracciones se hace muy larga, ese método puede ser contraproducente.
+
+Para más, la [Especificación 3.4](#).
+
+#### Especificación 3.4: Fully Modulable Inheritance Compliance
+
+La herencia 100% modular se consigue gracias a `src/cem/oop/Oot.js` y se usaría así:
+
+```js
+const SomeObject0 = {};
+const SomeObject1 = {};
+const SomeObject2 = {};
+const SomeObject3 = {};
+const Class1 = Pak.require("src/cem/oop/Oot.js").createClass({
+    prototype: SomeObject0,
+    traits: [
+        SomeObject1,
+        SomeObject2,
+        SomeObject3,
+    ],
+    constructor() {
+        console.log("No hay super, hay constructor único componible");
+    },
+    static: {
+        staticProp1: 100,
+        staticProp2: 200,
+    }
+    dynamic: {
+        dynamicProp1: 100,
+        dynamicProp2: 200,
+    }
+});
+```
+
+Lo que se pierde y lo que se gana:
+
+- Se pierde el reuso del `prototype` como abstracción intermedia
+- Se pierde la llamada a constructores prototipo en la instanciación
+- Se gana legibilidad de la instancia
+- Se gana tiempo en búsqueda por las capas `prototype`
+- Se gana **componibilidad** que es el target importante
 
 ### Especificación 4: Ficheros js
 
