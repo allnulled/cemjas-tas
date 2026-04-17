@@ -32,8 +32,9 @@ La siguiente especificación trata desde toolkit que hay que cubrir hasta especi
     - [Especificación 4: disposición de clases js](#especificación-4-disposición-de-clases-js)
     - [Especificación 5: disposición de ficheros satelitales al js](#especificación-5-disposición-de-ficheros-satelitales-al-js)
     - [Especificación 6: soporte para tests rápidos](#especificación-6-soporte-para-tests-rápidos)
-    - [Especificación 7.1: un framework de testing incluido](#especificación-71-un-framework-de-testing-incluido)
-    - [Especificación 7.2: desarrollo con test por fichero](#especificación-72-desarrollo-con-test-por-fichero)
+    - [Especificación 7: prestaciones para testing](#especificación-7-prestaciones-para-testing)
+      - [Especificación 7.1: un framework de testing incluido](#especificación-71-un-framework-de-testing-incluido)
+      - [Especificación 7.2: desarrollo con test por fichero](#especificación-72-desarrollo-con-test-por-fichero)
     - [Especificación 8: errores detallados](#especificación-8-errores-detallados)
       - [Especificación 8.1: tipos de error](#especificación-81-tipos-de-error)
     - [Especificación 9: tipos de fichero js](#especificación-9-tipos-de-fichero-js)
@@ -42,7 +43,7 @@ La siguiente especificación trata desde toolkit que hay que cubrir hasta especi
       - [Especificación 10.2: estrategía de carga asíncrona vía promesa iniciada en `on-module time`](#especificación-102-estrategía-de-carga-asíncrona-vía-promesa-iniciada-en-on-module-time)
       - [Especificación 10.3: estrategia de carga asíncrona vía patrón `Event manager` o `Lifecycle pattern`](#especificación-103-estrategia-de-carga-asíncrona-vía-patrón-event-manager-o-lifecycle-pattern)
     - [Especificación 11: indexación de módulos rápidos](#especificación-11-indexación-de-módulos-rápidos)
-    - [Especificación 11.0: caso de módulo indexado simple](#especificación-110-caso-de-módulo-indexado-simple)
+      - [Especificación 11.0: caso de módulo indexado simple](#especificación-110-caso-de-módulo-indexado-simple)
       - [Especificación 11.1: caso donde módulo indexado es factoría de otro módulo indexado](#especificación-111-caso-donde-módulo-indexado-es-factoría-de-otro-módulo-indexado)
       - [Especificación 11.2: caso donde módulo indexado es árbol de módulos indexados](#especificación-112-caso-donde-módulo-indexado-es-árbol-de-módulos-indexados)
       - [Especificación 11.3: caso donde módulo indexado generado en asíncrono es factoría de otro módulo indexado](#especificación-113-caso-donde-módulo-indexado-generado-en-asíncrono-es-factoría-de-otro-módulo-indexado)
@@ -377,7 +378,11 @@ pak test test/src/ruta/a/mi/clase.js  # Este ejecuta el test
 pak test --all                        # Este ejecuta TODOS los tests en: "test/**/*.js" y "**/*.test.js"
 ```
 
-### Especificación 7.1: un framework de testing incluido
+### Especificación 7: prestaciones para testing
+
+A continuación se agrupan las prestaciones para testing.
+
+#### Especificación 7.1: un framework de testing incluido
 
 La **Test Framework Provision Compliance** obliga a tener 1 framework para tests por lo menos.
 
@@ -386,7 +391,7 @@ La **Test Framework Provision Compliance** obliga a tener 1 framework para tests
 - El comando `pak test fichero.js` y `pak test --all` se encarga de la capa operativa (o CLI).
    - Comando básico para testing desde sistema operativo
 
-### Especificación 7.2: desarrollo con test por fichero
+#### Especificación 7.2: desarrollo con test por fichero
 
 La **Test-Per-File Development Compliance** obliga a dar la opción de testear cada fichero `js` con su propio test.
 
@@ -584,7 +589,7 @@ Pero piensa que: estos casos son muchas veces extendibles a el mismo caso con `P
 
 A continuación los casos típicos.
 
-### Especificación 11.0: caso de módulo indexado simple
+#### Especificación 11.0: caso de módulo indexado simple
 
 Este es el caso más simple de módulo indexado: **un valor cualquiera**.
 
