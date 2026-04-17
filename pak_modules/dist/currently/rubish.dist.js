@@ -1,10 +1,12 @@
 // @pak-module:
 // - Source generated:
-//    - date:         Sat Apr 18 2026 01:22:54 GMT+0200 (hora de verano de Europa central)
-//    - time:         0.352 seconds
-//    - modules:      2
-//       - 0. Pak.require("04. Environment dependant modules test/environments/!{entry}/module.js")
-//       - 1. Pak.require("04. Environment dependant modules test/entries-cross/nodejs.js")
+//    - date:         Sat Apr 18 2026 01:22:55 GMT+0200 (hora de verano de Europa central)
+//    - time:         0.018 seconds
+//    - modules:      4
+//       - 0. Pak.require("projects/currently/rubish/mod2.js")
+//       - 1. Pak.require("projects/currently/rubish/mod1.js")
+//       - 2. Pak.require("projects/currently/rubish/test.js")
+//       - 3. Pak.require("projects/currently/rubish.js")
 //    - styles:       0
 //    - templates:    0
 // @module[main] = Pak
@@ -19,7 +21,7 @@
       }
     },
     // API de Pak Modules: 2/4
-    entry: "nodejs",
+    entry: "rubish",
     modules: typeof globalPak === "object" ? Object.create(globalPak.modules) : {},
     require: function(originalId) {
       const id = Pak.resolveDriver(originalId);
@@ -36,10 +38,7 @@
     },
     // API de Pak Drivers: 3/4
     drivers: {
-      "drivers-test/first": "02. Drivers test/modules/first.js",
-      "drivers-test/second": "02. Drivers test/modules/second.js",
-      "drivers-test/third": "02. Drivers test/modules/third.js",
-      "drivers-test/modules": "02. Drivers test/modules"
+      "!{api}": "api"
     },
     driverIds: false,
     resolveDriver: function(id) {
@@ -64,7 +63,7 @@
   if (typeof global !== "undefined" && typeof global.Pak === "undefined") global.Pak = Pak;
   //////////////////////////////////////////////////////////////////////////////
 
-  // @module[1] = 04. Environment dependant modules test/environments/!{entry}/module.js
+  // @module[1] = projects/currently/rubish/mod2.js
   __LAST_PAK_RESULT__ = (factory => {
     const m = {
       exports: undefined
@@ -72,10 +71,11 @@
     factory(m);
     return m.exports;
   })(function(module) {
-    module.exports = "nodejs";
-    Pak.modules["04. Environment dependant modules test/environments/!{entry}/module.js"] = module.exports;
+    console.log("mod2");
+    // console.log(Pak.require("projects/currently/rubish/mod1.js"));
+    Pak.modules["projects/currently/rubish/mod2.js"] = module.exports;
   });
-  // @module[2] = 04. Environment dependant modules test/entries-cross/nodejs.js
+  // @module[2] = projects/currently/rubish/mod1.js
   __LAST_PAK_RESULT__ = (factory => {
     const m = {
       exports: undefined
@@ -83,8 +83,36 @@
     factory(m);
     return m.exports;
   })(function(module) {
-    module.exports = Pak.require("04. Environment dependant modules test/environments/!{entry}/module.js");
-    Pak.modules["04. Environment dependant modules test/entries-cross/nodejs.js"] = module.exports;
+    console.log("mod1");
+    Pak.require("projects/currently/rubish/mod2.js");
+    Pak.modules["projects/currently/rubish/mod1.js"] = module.exports;
+  });
+  // @module[3] = projects/currently/rubish/test.js
+  __LAST_PAK_RESULT__ = (factory => {
+    const m = {
+      exports: undefined
+    };
+    factory(m);
+    return m.exports;
+  })(function(module) {
+    console.log("hi")
+    console.log("hi")
+    console.log("hi")
+    console.log("hi")
+
+    Pak.require("projects/currently/rubish/mod1.js");
+    Pak.modules["projects/currently/rubish/test.js"] = module.exports;
+  });
+  // @module[4] = projects/currently/rubish.js
+  __LAST_PAK_RESULT__ = (factory => {
+    const m = {
+      exports: undefined
+    };
+    factory(m);
+    return m.exports;
+  })(function(module) {
+    module.exports = Pak.require("projects/currently/rubish/test.js");
+    Pak.modules["projects/currently/rubish.js"] = module.exports;
   });
 
   if (typeof module !== "undefined") module.exports = __LAST_PAK_RESULT__;

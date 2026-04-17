@@ -137,7 +137,7 @@
       return dependencies;
     }
 
-    async $writeJsModuleFor(id, source, driversJson, modulesCache, pakInstanceId = "Pak", sortedJsModules = []) {
+    async $writeJsModuleFor_v1(id, source, driversJson, modulesCache, pakInstanceId = "Pak", sortedJsModules = []) {
       PakCompiler.trace("PakCompiler.prototype.$writeJsModuleFor");
       return [
         `// @module[${sortedJsModules.length}] = ${id}`,
@@ -145,12 +145,23 @@
         `  try {`,
         `    ${source}`,
         `  } catch(error) {`,
-        `    console.log("⛔️ Error on module ${id}\\n  ", error);`,
+        `    // console.log("⛔️ Error on module ${id}\\n  ", error);`,
         `    throw error;`,
         `  } finally {`,
         `    __LAST_PAK_RESULT__ = ${pakInstanceId}.modules[${JSON.stringify(id)}] = module.exports;`,
         `  }`,
         `})({ exports: undefined });\n`,
+      ].join("\n");
+    }
+
+    async $writeJsModuleFor(id, source, driversJson, modulesCache, pakInstanceId = "Pak", sortedJsModules = []) {
+      PakCompiler.trace("PakCompiler.prototype.$writeJsModuleFor");
+      return [
+        `// @module[${sortedJsModules.length}] = ${id}`,
+        `__LAST_PAK_RESULT__ = (factory=>{const m={exports:undefined};factory(m);return m.exports;})(function(module){`,
+        `  ${source}`,
+        `  ${pakInstanceId}.modules[${JSON.stringify(id)}] = module.exports;`,
+        `});\n`,
       ].join("\n");
     }
 
@@ -194,13 +205,13 @@
          "//////////////////////////////////////////////////////////////////////////////\n"+
          "let __LAST_PAK_RESULT__ = undefined;\n"+
          "const Pak = {\n"+
-         "  // API de Pak Asserter: 1/3\n"+
+         "  // API de Pak Asserter: 1/4\n"+
          "  assert: (condition, message) => {\n"+
          "    if(!condition) {\n"+
          "      throw new Error(message);\n"+
          "    }\n"+
          "  },\n"+
-         "  // API de Pak Modules: 2/3\n"+
+         "  // API de Pak Modules: 2/4\n"+
          "  entry: __PAK_ENTRY_ID__,\n"+
          "  modules: typeof globalPak === \"object\" ? Object.create(globalPak.modules) : {},\n"+
          "  require: function (originalId) {\n"+
@@ -216,7 +227,7 @@
          "    }\n"+
          "    return Pak.modules[id];\n"+
          "  },\n"+
-         "  // API de Pak Drivers: 3/3\n"+
+         "  // API de Pak Drivers: 3/4\n"+
          "  drivers: __PAK_DRIVERS__,\n"+
          "  driverIds: false,\n"+
          "  resolveDriver: function(id) {\n"+
@@ -233,6 +244,8 @@
          "    }\n"+
          "    return id;\n"+
          "  },\n"+
+         "  // API de Pak Static: 4/4\n"+
+         "  static: {},\n"+
          "};\n"+
          "// Exporta Pak si no hay ya uno:\n"+
          "if (typeof window !== \"undefined\" && typeof window.Pak === \"undefined\") window.Pak = Pak;\n"+

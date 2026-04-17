@@ -21,6 +21,5 @@ refrescador \
   -i '**/*.nowatch.*' \
   -i '**/*-nowatch.*' \
   -x 'bash build-compiler.sh' \
-  -x 'node pak_modules/bin/cli.js test --all' \
-  -x 'node pak_modules/bin/cli.js test test/src/cem/tester/TestCollection.js' \
+  -x 'node pak_modules/bin/cli.js run currently -e rubish' \
   

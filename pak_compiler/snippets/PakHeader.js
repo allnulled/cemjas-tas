@@ -1,13 +1,13 @@
 //////////////////////////////////////////////////////////////////////////////
 let __LAST_PAK_RESULT__ = undefined;
 const Pak = {
-  // API de Pak Asserter: 1/3
+  // API de Pak Asserter: 1/4
   assert: (condition, message) => {
     if(!condition) {
       throw new Error(message);
     }
   },
-  // API de Pak Modules: 2/3
+  // API de Pak Modules: 2/4
   entry: __PAK_ENTRY_ID__,
   modules: typeof globalPak === "object" ? Object.create(globalPak.modules) : {},
   require: function (originalId) {
@@ -23,7 +23,7 @@ const Pak = {
     }
     return Pak.modules[id];
   },
-  // API de Pak Drivers: 3/3
+  // API de Pak Drivers: 3/4
   drivers: __PAK_DRIVERS__,
   driverIds: false,
   resolveDriver: function(id) {
@@ -40,6 +40,8 @@ const Pak = {
     }
     return id;
   },
+  // API de Pak Static: 4/4
+  static: {},
 };
 // Exporta Pak si no hay ya uno:
 if (typeof window !== "undefined" && typeof window.Pak === "undefined") window.Pak = Pak;

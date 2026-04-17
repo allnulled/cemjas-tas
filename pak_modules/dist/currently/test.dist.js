@@ -1,10 +1,9 @@
 // @pak-module:
 // - Source generated:
-//    - date:         Sat Apr 18 2026 01:22:54 GMT+0200 (hora de verano de Europa central)
-//    - time:         0.352 seconds
-//    - modules:      2
-//       - 0. Pak.require("04. Environment dependant modules test/environments/!{entry}/module.js")
-//       - 1. Pak.require("04. Environment dependant modules test/entries-cross/nodejs.js")
+//    - date:         Sat Apr 18 2026 00:43:28 GMT+0200 (hora de verano de Europa central)
+//    - time:         0.014 seconds
+//    - modules:      1
+//       - 0. Pak.require("projects/currently/test.js")
 //    - styles:       0
 //    - templates:    0
 // @module[main] = Pak
@@ -12,14 +11,14 @@
   //////////////////////////////////////////////////////////////////////////////
   let __LAST_PAK_RESULT__ = undefined;
   const Pak = {
-    // API de Pak Asserter: 1/4
+    // API de Pak Asserter: 1/3
     assert: (condition, message) => {
       if (!condition) {
         throw new Error(message);
       }
     },
-    // API de Pak Modules: 2/4
-    entry: "nodejs",
+    // API de Pak Modules: 2/3
+    entry: "test",
     modules: typeof globalPak === "object" ? Object.create(globalPak.modules) : {},
     require: function(originalId) {
       const id = Pak.resolveDriver(originalId);
@@ -34,12 +33,9 @@
       }
       return Pak.modules[id];
     },
-    // API de Pak Drivers: 3/4
+    // API de Pak Drivers: 3/3
     drivers: {
-      "drivers-test/first": "02. Drivers test/modules/first.js",
-      "drivers-test/second": "02. Drivers test/modules/second.js",
-      "drivers-test/third": "02. Drivers test/modules/third.js",
-      "drivers-test/modules": "02. Drivers test/modules"
+      "!{api}": "api"
     },
     driverIds: false,
     resolveDriver: function(id) {
@@ -56,35 +52,24 @@
       }
       return id;
     },
-    // API de Pak Static: 4/4
-    static: {},
   };
   // Exporta Pak si no hay ya uno:
   if (typeof window !== "undefined" && typeof window.Pak === "undefined") window.Pak = Pak;
   if (typeof global !== "undefined" && typeof global.Pak === "undefined") global.Pak = Pak;
   //////////////////////////////////////////////////////////////////////////////
 
-  // @module[1] = 04. Environment dependant modules test/environments/!{entry}/module.js
-  __LAST_PAK_RESULT__ = (factory => {
-    const m = {
-      exports: undefined
-    };
-    factory(m);
-    return m.exports;
-  })(function(module) {
-    module.exports = "nodejs";
-    Pak.modules["04. Environment dependant modules test/environments/!{entry}/module.js"] = module.exports;
-  });
-  // @module[2] = 04. Environment dependant modules test/entries-cross/nodejs.js
-  __LAST_PAK_RESULT__ = (factory => {
-    const m = {
-      exports: undefined
-    };
-    factory(m);
-    return m.exports;
-  })(function(module) {
-    module.exports = Pak.require("04. Environment dependant modules test/environments/!{entry}/module.js");
-    Pak.modules["04. Environment dependant modules test/entries-cross/nodejs.js"] = module.exports;
+  // @module[1] = projects/currently/test.js
+  (function(module) {
+    try {
+      console.log("hi")
+    } catch (error) {
+      console.log("⛔️ Error on module projects/currently/test.js\n  ", error);
+      throw error;
+    } finally {
+      __LAST_PAK_RESULT__ = Pak.modules["projects/currently/test.js"] = module.exports;
+    }
+  })({
+    exports: undefined
   });
 
   if (typeof module !== "undefined") module.exports = __LAST_PAK_RESULT__;

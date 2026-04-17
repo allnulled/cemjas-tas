@@ -39,20 +39,33 @@ La siguiente especificación trata desde toolkit que hay que cubrir hasta especi
     - [Especificación 9: tipos de fichero js](#especificación-9-tipos-de-fichero-js)
     - [Especificación 10: carga de módulos asíncronos](#especificación-10-carga-de-módulos-asíncronos)
       - [Especificación 10.1: rangos de tiempo de una aplicación](#especificación-101-rangos-de-tiempo-de-una-aplicación)
-      - [Especificación 10.2: Estrategía de carga asíncrona vía promesa iniciada en `on-module time`](#especificación-102-estrategía-de-carga-asíncrona-vía-promesa-iniciada-en-on-module-time)
-      - [Especificación 10.3: Estrategia de carga asíncrona vía patrón `Event manager` o `Lifecycle pattern`](#especificación-103-estrategia-de-carga-asíncrona-vía-patrón-event-manager-o-lifecycle-pattern)
+      - [Especificación 10.2: estrategía de carga asíncrona vía promesa iniciada en `on-module time`](#especificación-102-estrategía-de-carga-asíncrona-vía-promesa-iniciada-en-on-module-time)
+      - [Especificación 10.3: estrategia de carga asíncrona vía patrón `Event manager` o `Lifecycle pattern`](#especificación-103-estrategia-de-carga-asíncrona-vía-patrón-event-manager-o-lifecycle-pattern)
+    - [Especificación 11: indexación de módulos rápidos](#especificación-11-indexación-de-módulos-rápidos)
+    - [Especificación 11.0: caso de módulo indexado simple](#especificación-110-caso-de-módulo-indexado-simple)
+      - [Especificación 11.1: caso donde módulo indexado es factoría de otro módulo indexado](#especificación-111-caso-donde-módulo-indexado-es-factoría-de-otro-módulo-indexado)
+      - [Especificación 11.2: caso donde módulo indexado es árbol de módulos indexados](#especificación-112-caso-donde-módulo-indexado-es-árbol-de-módulos-indexados)
+      - [Especificación 11.3: caso donde módulo indexado generado en asíncrono es factoría de otro módulo indexado](#especificación-113-caso-donde-módulo-indexado-generado-en-asíncrono-es-factoría-de-otro-módulo-indexado)
+      - [Especificación 11.4: cuándo exportar o indexar una función asíncrona y cuándo una promesa](#especificación-114-cuándo-exportar-o-indexar-una-función-asíncrona-y-cuándo-una-promesa)
+      - [Especificación 11.5: cómo exportar y reusar un valor asíncrono](#especificación-115-cómo-exportar-y-reusar-un-valor-asíncrono)
+      - [Especificación 11.6: cuándo afecta la recursividad](#especificación-116-cuándo-afecta-la-recursividad)
 
 ## Cumplimiento específico
 
 A continuación se listan todas las especificaciones que el estándar `cemjas+tas` cumple con una breve y superficial explicación:
 
-- **Trojanic Architecture Specification:** arquitectura de 1 servidor en el sistema y 1 frontend paralelo que se comunica.
-- **Loop Booster Compliance:** optimización del bucle de producción de distribuibles.
-- **Fully Modulable Inheritance Compliance:** las piezas lógicas más pequeñas (funciones): (1) se separan en ficheros, y (2) pueden reusarse con independencia de las entidades grupo (clases, objetos, listas).
-- **Test Framework Provision Compliance:** proporcionar un framework de testing propio.
-- **Test-Per-File Development Compliance:** cada fichero puede testearse de forma independiente.
-- **Detailed Error Compliance:** cada error puede dar todos los detalles necesarios.
-- **Fast Error Type Creation Compliance:** permite crear nuevos tipos de error de forma fácil y rápida de implementar, minimiza protocolos de desarrollo.
+```
+Trojanic Architecture By Separated Entry Points Compliance
+Loop Booster Compliance
+Full Modulable Optimization Compliance
+Full Modulable Inheritance Compliance
+Full Modulable Case Compliance
+Test Framework Provision Compliance
+Test-Per-File Development Compliance
+Detailed Error Compliance
+Fast Error Type Creation Compliance
+Async Module Load Management Compliance
+```
 
 ## Especificaciones
 
@@ -274,7 +287,7 @@ Para más, la [Especificación 3.4](#).
 
 #### Especificación 3.4: herencia completamente modulable
 
-La **Fully Modulable Inheritance Compliance** obliga a diseñar una estrategia de herencia mediante módulos que se puedan reutilizar, es decir, la unidad reusable es más pequeña que la clase que permite herencia.
+La **Full Modulable Inheritance Compliance** obliga a diseñar una estrategia de herencia mediante módulos que se puedan reutilizar, es decir, la unidad reusable es más pequeña que la clase que permite herencia.
 
 En otros lenguajes se traduce por `mixin`, `trait`, `barrel file` o `interface`. En nuestro caso, hablaremos de `signatures collection`:
 
@@ -318,7 +331,7 @@ Lo que se pierde y lo que se gana:
 
 ### Especificación 4: disposición de clases js
 
-La **Fully Modulable Inheritance Compliance** implica separación de los componentes de clases en ficheros aparte. En este apartado se habla del caso.
+La **Full Modulable Inheritance Compliance** implica separación de los componentes de clases en ficheros aparte. En este apartado se habla del caso.
 
 Los nombres de cada fichero que compone la clase importan porque de ellos depende su **modulabilidad**.
 
@@ -483,7 +496,7 @@ Con Pak tenemos estos tiempos:
 - `compilation time`: es cuando el código escrito lo pasas a distribuible, ejecutable.
 - `runtime:` es cuando el código se está ejecutando.
    - `pre-module time`: lo que se ejecuta antes de nuestro módulo
-   - `on-module time`: la primera ejecución de nuestro módulo, siempre en sync (porque async puede haber cagada fácil y así es más controlado)
+   - `on-module time` o `on-load time`: la primera ejecución de nuestro módulo, siempre en sync (porque async puede haber cagada fácil y así es más controlado)
    - `post-module time`: aquí ya puede ser async.
       - `start time`: aquí inicias la aplicación, pero puede que quieras hacer cargas asíncronas
 
@@ -491,7 +504,7 @@ Ahora profundizamos en el `start time` que es donde podemos iniciar las cargas a
 
 Hay diferentes **estrategias de carga asíncrona** dentro del `start time`. A continuación se explican.
 
-#### Especificación 10.2: Estrategía de carga asíncrona vía promesa iniciada en `on-module time`
+#### Especificación 10.2: estrategía de carga asíncrona vía promesa iniciada en `on-module time`
 
 El ejemplo va a ser: *la conexión de la base de datos, y las migraciones*.
 
@@ -541,7 +554,7 @@ Y JavaScript es muy bueno en ejecución asíncrona, así que no lo desaproveches
 
 Es un punto donde se pierde tiempo, pero aprovechas el potencial de JavaScript.
 
-#### Especificación 10.3: Estrategia de carga asíncrona vía patrón `Event manager` o `Lifecycle pattern`
+#### Especificación 10.3: estrategia de carga asíncrona vía patrón `Event manager` o `Lifecycle pattern`
 
 En este caso, usaríamos una API intermedia, y encajaríamos los eventos con algo tipo:
 
@@ -551,6 +564,209 @@ En este caso, usaríamos una API intermedia, y encajaríamos los eventos con alg
    - `events.off("loaded", callback)`
 
 El `lifecycle` sería probablemente preferible para ahorrarse complejidad, pero `events` es correcto y reusable también.
+
+### Especificación 11: indexación de módulos rápidos
+
+El patrón `Pak.require("modulo.js")` busca en todos los módulos que se cargan con require. Esto implica que:
+
+- Cada búsqueda es entre todos los módulos disponibles
+- Hay una llamada expresa a un método
+- No es el método más eficiente de acceso
+
+El patrón `Pak.static.modulo` puede ayudar a indexar módulos de acceso más rápido.
+
+A continuación se explican los casos de módulos indexados un poco más *típicos*.
+
+Pero piensa que: estos casos son muchas veces extendibles a el mismo caso con `Pak.require(...)`, así que esta parte de la especificación es especialmente interesante para la dos:
+
+- `Full Modulable Case Compliance` porque cubrimos todos los casos posibles o se intenta
+- `Full Modulable Optimization Compliance` porque damos 1 método específico para optimizar el acceso a estos módulos
+
+A continuación los casos típicos.
+
+### Especificación 11.0: caso de módulo indexado simple
+
+Este es el caso más simple de módulo indexado: **un valor cualquiera**.
+
+Para definir módulos, indexados o no, ten en cuenta, **la abstracción más alta contiene a las inferiores**, porque debe recoger la firma que te interesa acceder en lote.
+
+Así que empieza por las pequeñas, porque ese es el orden de carga:
+
+```js
+// static-modulo-metodo.js
+module.exports = function() {
+    // @whatever
+};
+```
+
+```js
+// static-modulo.js
+Pak.static.modulo = {
+    metodo: Pak.require("static-modulo-metodo.js"),
+    metodo2: Pak.require("static-modulo-metodo2.js"),
+};
+```
+
+De esta forma, vas indexando el acceso a las APIs rápidas, mientras mantienes el control de la estructura de dependencias en `compilation time`.
+
+Pero hay casos más complicados que un simple `signature collection`.
+
+#### Especificación 11.1: caso donde módulo indexado es factoría de otro módulo indexado
+
+```js
+// Pak.require("moduloFactoria.js")
+Pak.static.moduloFabricado = Pak.static.moduloFactoria(...);
+```
+
+#### Especificación 11.2: caso donde módulo indexado es árbol de módulos indexados
+
+En esto, el ejemplo es el inicial igual.
+
+La regla es:
+
+> La abstracción más alta contiene a las inferiores**.
+
+Y:
+
+> El nesteo se hace automáticamente en el `compilation-time` siempre que uses el patrón `Pak.require("ruta-a-modulo.js")`. Tú no te tienes que preocupar ya de nada más.
+
+Pero todavía se puede complicar más. Atento al siguiente.
+
+#### Especificación 11.3: caso donde módulo indexado generado en asíncrono es factoría de otro módulo indexado
+
+Ponle que necesitas un factory que se carga en asíncrono para generar otro módulo indexado.
+
+El segundo, se sobreentiende: es asíncrono.
+
+Pero el problema ahora es que el primero, que necesitamos para el segundo, también es asíncrono.
+
+El primero será `factoria-asincrona.js` y el segundo `metodo-estatico.js`
+
+```js
+// factoria-asincrona.js
+module.exports = Pak.promise.factoriaAsincrona = (async() {
+    await cargaModulos();
+    await cargaPropia();
+    return Pak.static.factoriaAsincrona = async function() {
+        // Puede ser una función asíncrona o no, en realidad no importa,
+        // lo de factoriaAsincrona viene de que la obtenemos en asíncrono
+        // no de que sea una función asíncrona
+        // pero para complicarlo al máximo, es una función asíncrona
+    };
+})();
+```
+
+Y el segundo:
+
+```js
+// Pak.require("factoria-asincrona.js")
+module.exports = Pak.promise.metodoEstatico = (async() {
+    await Pak.promise.factoriaAsincrona;
+    // Aquí ya puedes acceder, y retornar también si quieres:
+    return Pak.static.metodoEstatico = await Pak.static.factoriaAsincrona();
+})();
+```
+
+La regla en este caso, pues, es la siguiente:
+
+> Separa la `Promise` del `valor` en cada caso, no en ficheros, sino en variables diferentes. Estará `Pak.promise` de apoyo a `Pak.static`.
+
+Sé que parece confuso, pero son los patrones que se van creando.
+
+#### Especificación 11.4: cuándo exportar o indexar una función asíncrona y cuándo una promesa
+
+Vale, son parece que casos raros, pero para nada, y hay que tenerlo más bien claro.
+
+> Promesa es cuando quieres un valor.
+
+En cambio:
+
+> Función asíncrona es cuando quieres una fábrica de un valor.
+
+Los 2 son módulos, solo que de distintos tipos.
+
+Correlativos a Function y valor, AsyncFunction y Promise son.
+
+Y vas a querer cubrir el siguiente caso también, muy interesante.
+
+#### Especificación 11.5: cómo exportar y reusar un valor asíncrono
+
+Vale, el caso que sería por defecto, pero que llegas a él en la casuística 5 si te pones a explicarlo. Vamos a él.
+
+> Un valor asíncrono es la clave, porque a partir de ahí puedes nestear valores asíncronos.
+
+Si aprendes a nestear valores asíncronos, fin del problema de la asincronicidad.
+
+Para exportar un valor asíncrono, hay 1 problema insalvable, de una u otra forma:
+
+- tienes que apoyarte en una promesa intermedia
+
+Para eso está `Pak.promise.*`.
+
+Entonces, haces este patrón:
+
+```js
+module.exports = Pak.promise.modulo = (async() {
+    return Pak.static.modulo = await Promise.all([
+        promesasDeModulosAnteriores(),
+        cargasPropias(),
+    ]);
+})();
+```
+
+Lo encadenas así, o lo vas descomponiendo como más te convenga, pero la idea fundamental de exportar un valor asíncrono es esta.
+
+Y lo siguiente es recogerlo:
+
+```js
+module.exports = (async function() {
+    await Pak.promise.modulo; // Aquí lo pides
+    return cargaPropia(Pak.static.modulo); // Aquí lo usas
+})();
+```
+
+El patrón de `Promise` nos va a ayudar mucho en estos casos, porque se va a preocupar de lanzar la función que apendicemos en el `then` mediante el `await` si es que la promesa ya ha sido resuelta sin tener que hacer nada más.
+
+
+#### Especificación 11.6: cuándo afecta la recursividad
+
+En esta casuística:
+
+```js
+// modulo-1.js
+module.exports = Pak.require("modulo-2.js");
+```
+
+Tenemos el caso 1 de 2:
+
+```js
+// modulo-2.js
+module.exports = Pak.require("modulo-1.js");
+```
+
+Lanzará un error de que no encuentra, en runtime, el módulo.
+
+Tenemos el caso 2 de 2:
+
+```js
+// modulo-2.js
+// Pak.require("modulo-1.js");
+module.exports = 0;
+```
+
+En esta ocasión no nos va a explotar el error.
+
+**¿Por qué pasa así?**
+
+Porque en compilación no evalúa, solo ordena, y no llega a encontrar la `race condition` que le llaman creo, donde el módulo 2 para cargarse necesita al 1, y el 1 necesita al 2.
+
+**¿Qué hacer en estos casos?**
+
+Corregirlo.
+
+Es un error de diseño, necesariamente un módulo tiene que saberse si va después o antes que otro, siempre, en cualquier caso, y si hay un cruce recursivo, hay que revisarlo, porque debería poder resolverse.
+
+Vamos, pienso.
 
 
 

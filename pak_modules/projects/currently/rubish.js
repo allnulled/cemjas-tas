@@ -1,0 +1,1 @@
+module.exports = Pak.require("projects/currently/rubish/test.js");

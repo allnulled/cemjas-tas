@@ -3,4 +3,4 @@
 # node pak_modules/bin/cli.js build currently
 
 # Ejecución de la aplicación:
-pak run currently -f bin
+pak run currently -e bin

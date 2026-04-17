@@ -30,8 +30,9 @@ PakCompiler.global.setBasedir(path.resolve(projectRoot, "pak_modules"));
 const argumentsParser = require(PakCompiler.global.basedir + "/src/pak/nodejs/cmd/parseArgsIntoObject.js");
 const argv = [...process.argv];
 const args0 = argv.splice(2);
+const utils = { projectRoot, colors, PakCompiler, commandsSchema };
 if(args0.length === 0) {
-  require(__dirname + "/command/help.js")(args0);
+  require(__dirname + "/command/help.js")(args0, utils);
   throw new Error(`Command «pak» requires at least 1 parameter for the command but 0 were found by command line arguments on «pak»`);
 }
 const [ command, project = "default" ] = args0;
@@ -41,4 +42,4 @@ if(!(command in commandsSchema)) {
 const args1 = argumentsParser(args0, commandsSchema[command]);
 // hasta aquí es cli
 const callback = require(__dirname + "/command/" + command + ".js");
-module.exports = callback(args1, { projectRoot, colors, PakCompiler, commandsSchema });
+module.exports = callback(args1, utils);

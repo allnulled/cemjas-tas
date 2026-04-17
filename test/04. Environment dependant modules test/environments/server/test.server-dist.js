@@ -1,7 +1,7 @@
 // @pak-module:
 // - Source generated:
-//    - date:         Tue Apr 14 2026 12:34:50 GMT+0200 (hora de verano de Europa central)
-//    - time:         0.328 seconds
+//    - date:         Sat Apr 18 2026 01:22:54 GMT+0200 (hora de verano de Europa central)
+//    - time:         0.348 seconds
 //    - modules:      2
 //       - 0. Pak.require("04. Environment dependant modules test/environments/!{entry}/module.js")
 //       - 1. Pak.require("04. Environment dependant modules test/entries-cross/server.js")
@@ -12,13 +12,13 @@
   //////////////////////////////////////////////////////////////////////////////
   let __LAST_PAK_RESULT__ = undefined;
   const Pak = {
-    // API de Pak Asserter: 1/3
+    // API de Pak Asserter: 1/4
     assert: (condition, message) => {
       if (!condition) {
         throw new Error(message);
       }
     },
-    // API de Pak Modules: 2/3
+    // API de Pak Modules: 2/4
     entry: "server",
     modules: typeof globalPak === "object" ? Object.create(globalPak.modules) : {},
     require: function(originalId) {
@@ -34,7 +34,7 @@
       }
       return Pak.modules[id];
     },
-    // API de Pak Drivers: 3/3
+    // API de Pak Drivers: 3/4
     drivers: {
       "drivers-test/first": "02. Drivers test/modules/first.js",
       "drivers-test/second": "02. Drivers test/modules/second.js",
@@ -56,6 +56,8 @@
       }
       return id;
     },
+    // API de Pak Static: 4/4
+    static: {},
   };
   // Exporta Pak si no hay ya uno:
   if (typeof window !== "undefined" && typeof window.Pak === "undefined") window.Pak = Pak;
@@ -63,30 +65,26 @@
   //////////////////////////////////////////////////////////////////////////////
 
   // @module[1] = 04. Environment dependant modules test/environments/!{entry}/module.js
-  (function(module) {
-    try {
-      module.exports = "server";
-    } catch (error) {
-      console.log("⛔️ Error on module 04. Environment dependant modules test/environments/!{entry}/module.js\n  ", error);
-      throw error;
-    } finally {
-      __LAST_PAK_RESULT__ = Pak.modules["04. Environment dependant modules test/environments/!{entry}/module.js"] = module.exports;
-    }
-  })({
-    exports: undefined
+  __LAST_PAK_RESULT__ = (factory => {
+    const m = {
+      exports: undefined
+    };
+    factory(m);
+    return m.exports;
+  })(function(module) {
+    module.exports = "server";
+    Pak.modules["04. Environment dependant modules test/environments/!{entry}/module.js"] = module.exports;
   });
   // @module[2] = 04. Environment dependant modules test/entries-cross/server.js
-  (function(module) {
-    try {
-      module.exports = Pak.require("04. Environment dependant modules test/environments/!{entry}/module.js");
-    } catch (error) {
-      console.log("⛔️ Error on module 04. Environment dependant modules test/entries-cross/server.js\n  ", error);
-      throw error;
-    } finally {
-      __LAST_PAK_RESULT__ = Pak.modules["04. Environment dependant modules test/entries-cross/server.js"] = module.exports;
-    }
-  })({
-    exports: undefined
+  __LAST_PAK_RESULT__ = (factory => {
+    const m = {
+      exports: undefined
+    };
+    factory(m);
+    return m.exports;
+  })(function(module) {
+    module.exports = Pak.require("04. Environment dependant modules test/environments/!{entry}/module.js");
+    Pak.modules["04. Environment dependant modules test/entries-cross/server.js"] = module.exports;
   });
 
   if (typeof module !== "undefined") module.exports = __LAST_PAK_RESULT__;

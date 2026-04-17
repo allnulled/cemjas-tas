@@ -13,23 +13,37 @@ const listJsFilesFrom = function (args, utils, pakModulesDir, ...subpaths) {
   if (!hasItems) {
     for (let index = 0; index < allJsFiles.length; index++) {
       const jsFile = allJsFiles[index];
-      const num = utils.colors.style("magenta,bold").text(`[-i ${('' + index).padStart((allJsFiles.length + '').length, '0')}]`);
-      console.log(`   ${num} Pak.require("${jsFile}")`);
+      const num = utils.colors.style("magenta").text(`[-i ${('' + index).padStart((allJsFiles.length + '').length, '0')}]`);
+      if(jsFile.endsWith(".test.js")) {
+        console.log(`   ${num} ` + utils.colors.style("red").text(`Pak.require("${jsFile}")`));
+      } else {
+        const fileparts = jsFile.split("/");
+        const filename = fileparts[fileparts.length-1];
+        const firstChar = filename[0];
+        const jsFileCool = jsFile.replace(/[A-Z]/g, m => " " + m.toLowerCase());
+        if(firstChar === firstChar.toUpperCase() && firstChar !== firstChar.toLowerCase()) {
+          console.log(`   ${num} ` + utils.colors.style("cyan").text(`Pak.require("${jsFile}")`));
+        } else {
+          console.log(`   ${num} ` + utils.colors.style("green").text(`Pak.require("${jsFileCool}")`));
+        }
+      }
     }
   } else if (hasItems) {
+    // Este bloque no sé qué hace
     const allMetadata = {};
     for (let index = 0; index < args.item.length; index++) {
       const i = args.item[index];
-      const jsFile = allJsFiles[i];
-      const num = utils.colors.style("green,bold").text(`[-i ${i}]`);
+      const jsFile = allJsFiles[parseInt(i)];
+      const num = utils.colors.style("green,bold").text(`[-i ${parseInt(i)}]`);
       const fullpath = path.resolve(pakModulesDir, jsFile);
       const size = fs.readFileSync(fullpath).toString().length;
       const metadata = {};
       try {
         metadata.doc = fs.readFileSync(fullpath.replace(/\.js$/g, ".md")).toString();
       } catch (error) {
-        metadata.doc = false;
+        metadata.doc = fs.readFileSync(fullpath).toString();
       }
+      
       console.log(`   ${num} Pak.require("${jsFile}") [${size}]`);
       if(metadata.doc) {
         console.log(utils.colors.style("cyan,italic").text(`\n\n${metadata.doc}\n\n`));
@@ -49,7 +63,7 @@ module.exports = async function (args, utils) {
     const fixedCmdOptions = { stdio: "inherit" };
     const listables = {
       commands: () => { listJsFilesFrom(args, utils, pakModulesDir, "bin/command"); },
-      api: () => { listJsFilesFrom(args, utils, pakModulesDir, "api"); },
+      src: () => { listJsFilesFrom(args, utils, pakModulesDir, "src"); },
       projects: () => { listJsFilesFrom(args, utils, pakModulesDir, "projects"); },
       distribuibles: () => { listJsFilesFrom(args, utils, pakModulesDir, "dist"); },
     };

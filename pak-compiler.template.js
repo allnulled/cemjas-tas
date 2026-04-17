@@ -137,7 +137,7 @@
       return dependencies;
     }
 
-    async $writeJsModuleFor(id, source, driversJson, modulesCache, pakInstanceId = "Pak", sortedJsModules = []) {
+    async $writeJsModuleFor_v1(id, source, driversJson, modulesCache, pakInstanceId = "Pak", sortedJsModules = []) {
       PakCompiler.trace("PakCompiler.prototype.$writeJsModuleFor");
       return [
         `// @module[${sortedJsModules.length}] = ${id}`,
@@ -145,12 +145,23 @@
         `  try {`,
         `    ${source}`,
         `  } catch(error) {`,
-        `    console.log("⛔️ Error on module ${id}\\n  ", error);`,
+        `    // console.log("⛔️ Error on module ${id}\\n  ", error);`,
         `    throw error;`,
         `  } finally {`,
         `    __LAST_PAK_RESULT__ = ${pakInstanceId}.modules[${JSON.stringify(id)}] = module.exports;`,
         `  }`,
         `})({ exports: undefined });\n`,
+      ].join("\n");
+    }
+
+    async $writeJsModuleFor(id, source, driversJson, modulesCache, pakInstanceId = "Pak", sortedJsModules = []) {
+      PakCompiler.trace("PakCompiler.prototype.$writeJsModuleFor");
+      return [
+        `// @module[${sortedJsModules.length}] = ${id}`,
+        `__LAST_PAK_RESULT__ = (factory=>{const m={exports:undefined};factory(m);return m.exports;})(function(module){`,
+        `  ${source}`,
+        `  ${pakInstanceId}.modules[${JSON.stringify(id)}] = module.exports;`,
+        `});\n`,
       ].join("\n");
     }
 
