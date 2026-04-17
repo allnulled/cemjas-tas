@@ -19,40 +19,69 @@ La siguiente especificación trata desde toolkit que hay que cubrir hasta especi
 - [cemjas+tas](#cemjastas)
   - [Características](#características)
   - [Índice](#índice)
-  - [Especificación](#especificación)
-    - [Especificación 1: El loop booster](#especificación-1-el-loop-booster)
-    - [Especificación 2: Los entry points](#especificación-2-los-entry-points)
-      - [Especificación 2.1: Requerimientos de los entry points](#especificación-21-requerimientos-de-los-entry-points)
-    - [Especificación 3: Ficheros de una clase descomponible](#especificación-3-ficheros-de-una-clase-descomponible)
+  - [Cumplimiento específico](#cumplimiento-específico)
+  - [Especificaciones](#especificaciones)
+    - [Especificación 1: un loop booster](#especificación-1-un-loop-booster)
+    - [Especificación 2: los entry points de una arquitectura troyánica](#especificación-2-los-entry-points-de-una-arquitectura-troyánica)
+      - [Especificación 2.1: requerimientos de los entry points](#especificación-21-requerimientos-de-los-entry-points)
+    - [Especificación 3: ficheros de una clase descomponible](#especificación-3-ficheros-de-una-clase-descomponible)
       - [Especificación 3.1: cuándo sí usar class de ES06](#especificación-31-cuándo-sí-usar-class-de-es06)
       - [Especificación 3.2: cómo replicar todo el comportamiento de class](#especificación-32-cómo-replicar-todo-el-comportamiento-de-class)
       - [Especificación 3.3: herencia de rasgos al estilo Dart](#especificación-33-herencia-de-rasgos-al-estilo-dart)
-      - [Especificación 3.4: Fully Modulable Inheritance Compliance](#especificación-34-fully-modulable-inheritance-compliance)
-    - [Especificación 4: Ficheros js](#especificación-4-ficheros-js)
-    - [Especificación 5: Ficheros satelitales al js](#especificación-5-ficheros-satelitales-al-js)
-    - [Especificación 6: Soporte para tests rápidos](#especificación-6-soporte-para-tests-rápidos)
-    - [Especificación 7.1: Test Framework Provision Compliance](#especificación-71-test-framework-provision-compliance)
-    - [Especificación 7.2: Test-Per-File Development Compliance](#especificación-72-test-per-file-development-compliance)
-    - [Especificación 7: Errores detallados](#especificación-7-errores-detallados)
+      - [Especificación 3.4: herencia completamente modulable](#especificación-34-herencia-completamente-modulable)
+    - [Especificación 4: disposición de clases js](#especificación-4-disposición-de-clases-js)
+    - [Especificación 5: disposición de ficheros satelitales al js](#especificación-5-disposición-de-ficheros-satelitales-al-js)
+    - [Especificación 6: soporte para tests rápidos](#especificación-6-soporte-para-tests-rápidos)
+    - [Especificación 7.1: un framework de testing incluido](#especificación-71-un-framework-de-testing-incluido)
+    - [Especificación 7.2: desarrollo con test por fichero](#especificación-72-desarrollo-con-test-por-fichero)
+    - [Especificación 8: errores detallados](#especificación-8-errores-detallados)
+      - [Especificación 8.1: tipos de error](#especificación-81-tipos-de-error)
+    - [Especificación 9: tipos de fichero js](#especificación-9-tipos-de-fichero-js)
+    - [Especificación 10: carga de módulos asíncronos](#especificación-10-carga-de-módulos-asíncronos)
+      - [Especificación 10.1: rangos de tiempo de una aplicación](#especificación-101-rangos-de-tiempo-de-una-aplicación)
+      - [Especificación 10.2: Estrategía de carga asíncrona vía promesa iniciada en `on-module time`](#especificación-102-estrategía-de-carga-asíncrona-vía-promesa-iniciada-en-on-module-time)
+      - [Especificación 10.3: Estrategia de carga asíncrona vía patrón `Event manager` o `Lifecycle pattern`](#especificación-103-estrategia-de-carga-asíncrona-vía-patrón-event-manager-o-lifecycle-pattern)
 
-## Especificación
+## Cumplimiento específico
+
+A continuación se listan todas las especificaciones que el estándar `cemjas+tas` cumple con una breve y superficial explicación:
+
+- **Trojanic Architecture Specification:** arquitectura de 1 servidor en el sistema y 1 frontend paralelo que se comunica.
+- **Loop Booster Compliance:** optimización del bucle de producción de distribuibles.
+- **Fully Modulable Inheritance Compliance:** las piezas lógicas más pequeñas (funciones): (1) se separan en ficheros, y (2) pueden reusarse con independencia de las entidades grupo (clases, objetos, listas).
+- **Test Framework Provision Compliance:** proporcionar un framework de testing propio.
+- **Test-Per-File Development Compliance:** cada fichero puede testearse de forma independiente.
+- **Detailed Error Compliance:** cada error puede dar todos los detalles necesarios.
+- **Fast Error Type Creation Compliance:** permite crear nuevos tipos de error de forma fácil y rápida de implementar, minimiza protocolos de desarrollo.
+
+## Especificaciones
 
 A continuación se exponen las especificaciones de programación.
 
-### Especificación 1: El loop booster
+### Especificación 1: un loop booster
+
+La **Loop Booster Compliance** obliga a proveer de 1 bucle de escucha activa de ficheros para compilar a cada cambio.
 
 Aquí uso:
 
 - detecto cambios y cronometro comandos con [allnulled@refrescador](https://github.com/allnulled/refrescador).
 - compilo el javascript modulable con [allnulled@pak-compiler](https://github.com/allnulled/pak-compiler).
+   - mucho más rápido que el tooling pesado que está de moda para soportar TypeScript, JSX, etc.
+   - esta especificación no entra ni en los timings ni en el stack
+      - pero si estás conforme con el JavaScript clásico:
+      - *deberías prescindir de estas tecnologías que aportan mucha fanciness y nada nuevo que no permitiera JavaScript, todo a varios precios, y con limitaciones muy marcadas*
 
-Con las features que heredo de estos 2 proyectos ya tengo lo necesario para construir una **cemjas compliant application**.
+Con las features que heredo de estos 2 proyectos ya tengo lo necesario para construir una **cemjas+tas compliant application**.
 
 Pero no todo vale, y por eso las especificaciones siguen.
 
-### Especificación 2: Los entry points
+### Especificación 2: los entry points de una arquitectura troyánica
 
-La **cemjas+tas**, salvando la *trojanic architecture*, propone de base los siguientes **entry points**:
+La **Trojanic Architecture By Separated Entry Points Compliance** obliga a tener diferenciadas las entradas de cada programa necesario para construir una arquitectura troyánica.
+
+Una **entrada** o entry point en este contexto significa el fichero de partida de 1 proceso compilatorio.
+
+En este aspecto, el `cemjas+tas` propone las siguientes entradas:
 
 - `@{project}/bin.js`: programa para línea de comandos (nodejs)
 - `@{project}/server.js`: programa para hablar con sistema operativo (nodejs)
@@ -69,14 +98,14 @@ Se esperan pues las rutas relativas:
 - `dist/@{project}/gui.dist.js`
 - `dist/@{project}/gui.dist.css`
 
-#### Especificación 2.1: Requerimientos de los entry points
+#### Especificación 2.1: requerimientos de los entry points
 
 - El `bin` se espera que tenga un comando para despertar a 1 servidor único.
 - El `server` se espera que sea único por sistema y reutilice los recursos entre cargas.
 - El `client` se espera que sea basado en `socket-io.client.js` y vale igual para `nodejs` y `gui`.
 - El `gui` se espera que sea tipo web normal
 
-### Especificación 3: Ficheros de una clase descomponible
+### Especificación 3: ficheros de una clase descomponible
 
 Esta especificación trata de fijar cómo describir clases de forma sistemática.
 
@@ -243,7 +272,13 @@ La crítica es que si la chain de abstracciones se hace muy larga, ese método p
 
 Para más, la [Especificación 3.4](#).
 
-#### Especificación 3.4: Fully Modulable Inheritance Compliance
+#### Especificación 3.4: herencia completamente modulable
+
+La **Fully Modulable Inheritance Compliance** obliga a diseñar una estrategia de herencia mediante módulos que se puedan reutilizar, es decir, la unidad reusable es más pequeña que la clase que permite herencia.
+
+En otros lenguajes se traduce por `mixin`, `trait`, `barrel file` o `interface`. En nuestro caso, hablaremos de `signatures collection`:
+
+> Una `signatures collection` o **colección de firmas** es un objeto JavaScript plano, sin prototype.
 
 La herencia 100% modular se consigue gracias a `src/cem/oop/Oot.js` y se usaría así:
 
@@ -281,11 +316,13 @@ Lo que se pierde y lo que se gana:
 - Se gana tiempo en búsqueda por las capas `prototype`
 - Se gana **componibilidad** que es el target importante
 
-### Especificación 4: Ficheros js
+### Especificación 4: disposición de clases js
 
-Y los nombres de cada fichero que compone la clase importan porque de ellos depende su **modulabilidad**.
+La **Fully Modulable Inheritance Compliance** implica separación de los componentes de clases en ficheros aparte. En este apartado se habla del caso.
 
-En una clase, conviene separar cada propiedad y método en fichero suelto, y hacer grupos selectivos:
+Los nombres de cada fichero que compone la clase importan porque de ellos depende su **modulabilidad**.
+
+En una clase **con componentes reusables**, conviene separar cada propiedad y método en fichero suelto, y hacer grupos selectivos:
 
 - `Clase.js`: la función constructora + su `prototype` modificado.
 - `Clase.constructor.js`: la función constructora.
@@ -296,7 +333,9 @@ En una clase, conviene separar cada propiedad y método en fichero suelto, y hac
 
 Tienes más modularidad, más agrupabilidad, más encontrabilidad, más documentabilidad, más estructura.
 
-### Especificación 5: Ficheros satelitales al js
+Es más verboso y ruidoso, y muchas veces no hay reusabilidad dentro de las funciones de una clase. Así que conviene ver cuándo tiene sentido y cuándo no.
+
+### Especificación 5: disposición de ficheros satelitales al js
 
 Cada fichero js, clase o no, método o no, puede tener homólogos, ficheros que comparten el nombre pero no la extensión. Los ficheros homólogos oficiales de la especificación actual son:
 
@@ -306,7 +345,9 @@ Cada fichero js, clase o no, método o no, puede tener homólogos, ficheros que 
 
 Esto se hace así para que en el vscode, en las pestañas, te puedas guiar por el nombre resaltado, porque si llamas a todos los ficheros `index.js` luego tienes problemas al buscar entre pestañas con el vscode.
 
-### Especificación 6: Soporte para tests rápidos
+### Especificación 6: soporte para tests rápidos
+
+
 
 Puedes añadir *tests unitarios* en paralelo de 2 formas:
 
@@ -323,30 +364,193 @@ pak test test/src/ruta/a/mi/clase.js  # Este ejecuta el test
 pak test --all                        # Este ejecuta TODOS los tests en: "test/**/*.js" y "**/*.test.js"
 ```
 
-### Especificación 7.1: Test Framework Provision Compliance
+### Especificación 7.1: un framework de testing incluido
 
-La **TFP-Com o Test Framework Provision Compliance** obliga a tener 1 framework para tests por lo menos.
+La **Test Framework Provision Compliance** obliga a tener 1 framework para tests por lo menos.
 
 - El módulo `src/cem/tester/TestCollection.js` se encarga de la capa programática (o API).
    - Toolkit básico para testing desde programa
 - El comando `pak test fichero.js` y `pak test --all` se encarga de la capa operativa (o CLI).
    - Comando básico para testing desde sistema operativo
 
-### Especificación 7.2: Test-Per-File Development Compliance
+### Especificación 7.2: desarrollo con test por fichero
 
-La **TPFD-Com o Test-Per-File Development Compliance** obliga a dar la opción de testear cada fichero `js` con su propio test.
+La **Test-Per-File Development Compliance** obliga a dar la opción de testear cada fichero `js` con su propio test.
 
 - El comando `pak test fichero.js` y `pak test --all` se encarga de la capa operativa (o CLI).
    - Permite con `--all` lanzar todos los comandos que:
       - Empiecen con `test/**/*.js`
       - Acaben con `**/*.test.js`
 
-### Especificación 7: Errores detallados
+### Especificación 8: errores detallados
+
+La **Detailed Error Compliance** obliga a permitir tratar los errores como objetos con propiedades en lugar de texto y clase solamente.
 
 Los errores de la aplicación pasan a consistir en un JSON que indica todos los detalles necesarios para informar del error.
 
 La forma de lanzar errores pasa a ser:
 
 ```js
-throw Pak.require("src/cem/error/ErrorData.js").create({ detalle1: 1, detalle2: 2 })
+throw Pak.require("src/cem/error/ErrorData.js").create({
+    detalle1: 1,
+    detalle2: 2
+});
 ```
+
+#### Especificación 8.1: tipos de error
+
+La **Fast Error Type Creation Compliance** obliga a tener 1 tipo de error padre de todos, y no tener mil clases diferentes para cada tipo de error que la aplicación va necesitando.
+
+En caso de querer construir tipos de errores, en lugar de extender la clase `Error` y cambiarle el `name` en cada caso, lo que se hace es reservar la propiedad `type: "ErrorType"`.
+
+```js
+throw Pak.require("src/cem/error/ErrorData.js").create({
+    type: "SyntaxError",
+    location: {
+        start: 0,
+        end: 5
+    }
+});
+```
+
+### Especificación 9: tipos de fichero js
+
+En este apartado hablamos de los tipos de fichero js que vamos a encontrar, porque nos servirá para un mayor orden en el código que generamos.
+
+Los ficheros js que vamos a modular son básicamente siempre de 2 tipos:
+
+- ficheros lógica
+   - *hacen cosas, no solo exportan*
+- ficheros tipo
+   - *no hacen cosas, solo exportan cosas*
+   - pueden exportar una `signature collection`
+   - pueden exportar cualquier otro valor
+
+Estos 2 conceptos son:
+
+- **concurribles**: un fichero puede ser fichero lógica y fichero tipo a la vez
+- **intercambiables**: porque...
+   - un fichero lógica que no exporta nada, sería un fichero tipo que exporta `undefined` al fin y al cabo.
+   - y un fichero tipo siempre será un fichero lógica que construye lo que exporta y lo exporta al fin y al cabo.
+
+**¿Entonces por qué esta distinción, si son definiciones intercambiables?**
+
+Para entender mejor.
+
+Normalmente, ficheros lógica solo habrá 1: el **main.js**, o entry point en nuestro estándar. Todos los demás, normalmente serían ficheros tipo.
+
+En los ficheros tipo **se intenta** (porque no siempre es posible, hablaremos de las excepciones, pero se intenta) encerrar la lógica en funciones. Esto bypasea la evaluación de ese código, y nos permite late-evaluation, teniendo variables que no necesariamente existan en ese momento. Si esa lógica queda fuera de las funciones, será evaluado, y las variables faltantes harán que lance error.
+
+Pero en general esto, gracias a `PakCompiler` y su auto-orden en el sistema de dependecias, en principio no nos tendría que afectar, porque si en los ficheros js usamos variables que recogemos con `Pak.require`, el compilador ya se encargará de poner los ficheros dependidos antes que los dependientes.
+
+**¿En qué casos de los ficheros tipo no es posible encerrar la lógica en funciones?**
+
+Cuando la firma que quieres exportar la construyes con factories propios.
+
+```js
+module.exports = {
+    metodo1: Pak.require("fabrica/de/metodos/tal.js").make(1),
+    metodo2: Pak.require("fabrica/de/metodos/tal.js").make(2),
+    metodo3: Pak.require("fabrica/de/metodos/tal.js").make(3),
+};
+```
+
+En este ejemplo, estamos fabricando los métodos, no simplemente asignándolos, sino que llamamos. Y se puede complicar más:
+
+```js
+module.exports = {
+    metodo4: await Pak.require("fabrica.js").make(4)
+};
+```
+
+Esto, por ejemplo, no podemos hacerlo. Porque los módulos no se están ejecutando en código asíncrono, no podemos usar `await`. Tenemos que dar un poco de vuelta. Esto se hace para preservar la velocidad en el `load-time`.
+
+La especificación 10 trata de cómo cargar módulos asíncronos con `Pak`.
+
+### Especificación 10: carga de módulos asíncronos
+
+La `Async Module Load Management Compliance` procura métodos suficientes para la carga de módulos asíncronos.
+
+- la `Especificación 10.1` es solo para contextualizar.
+- la `Especificación 10.2` es la estrategia preferible: carga asíncrona vía promesa iniciada en `on-module time`.
+- la `Especificación 10.3` son otras 2 estrategias posibles: carga asíncrona vía patrón `Event manager` o `Lifecycle pattern`.
+
+#### Especificación 10.1: rangos de tiempo de una aplicación
+
+Con Pak tenemos estos tiempos:
+
+- `development time`: es cuando estás escribiendo el código.
+- `compilation time`: es cuando el código escrito lo pasas a distribuible, ejecutable.
+- `runtime:` es cuando el código se está ejecutando.
+   - `pre-module time`: lo que se ejecuta antes de nuestro módulo
+   - `on-module time`: la primera ejecución de nuestro módulo, siempre en sync (porque async puede haber cagada fácil y así es más controlado)
+   - `post-module time`: aquí ya puede ser async.
+      - `start time`: aquí inicias la aplicación, pero puede que quieras hacer cargas asíncronas
+
+Ahora profundizamos en el `start time` que es donde podemos iniciar las cargas asíncronas.
+
+Hay diferentes **estrategias de carga asíncrona** dentro del `start time`. A continuación se explican.
+
+#### Especificación 10.2: Estrategía de carga asíncrona vía promesa iniciada en `on-module time`
+
+El ejemplo va a ser: *la conexión de la base de datos, y las migraciones*.
+
+- Necesitamos la conexión primero, que es una carga asíncrona.
+- Usamos la conexión después, para ejecutar la migración, que es otra carga asíncrona.
+- Miramos de cómo encajarlo en el `main.js`.
+
+La estrategía consiste en que `on-module time` exportas una `Promise` en un objeto o no, en este caso no, solo la `Promise` (no async function: `Promise`):
+
+```js
+// database-connection.js
+module.exports = (async function() {
+    return await createConnectionSomehow();
+})();
+```
+
+En la migración, cargamos asíncronamente los fuentes de migraciones que son asíncronos, y la conexión. Y con el utils, migramos:
+
+```js
+// database-migration.js
+module.exports = (async function() {
+    // Módulos asíncronos anteriores:
+    const [sources, connection] = await Promise.all([
+        Pak.require("database-migration-sources.js"), // Fingiremos que las migraciones las cargamos en asíncrono, que puede ser
+        Pak.require("database-connection.js"), // Y la conexión que es asíncrono
+    ]);
+    // Resultado del módulo asíncrono actual:
+    return await Pak.require("database-utils.js").migrateBySources(connection, sources);
+})();
+```
+
+Finalmente, en el `main.js` no hace falta que llamemos a nada, solo hacemos `await` del módulo:
+
+```js
+module.exports = (async function() {
+    const { sources, connection, results } = await Pak.require("database-migration.js");
+})();
+```
+
+Este patrón es el más limpio, porque anidamos cargas asíncronas en el punto neto del tiempo.
+
+¡Pero cuidado! Todos los módulos se cargan en el punto neto del tiempo, pero no el `main.js` y sus `await`.
+
+> Si en el `main.js` bloqueas con `await` por cargar 1 módulo mientras hay cosas que se pueden hacer sin ese módulo, estás consumiendo tiempo directamente de la experiencia de usuario.
+
+Y JavaScript es muy bueno en ejecución asíncrona, así que no lo desaproveches, y usa estos patrones, paraleliza en el `main.js` siempre que puedas.
+
+Es un punto donde se pierde tiempo, pero aprovechas el potencial de JavaScript.
+
+#### Especificación 10.3: Estrategia de carga asíncrona vía patrón `Event manager` o `Lifecycle pattern`
+
+En este caso, usaríamos una API intermedia, y encajaríamos los eventos con algo tipo:
+
+- `lifecycle.onLoaded.add(callback)`
+- `events.on("loaded", callback)`
+   - `events.once("loaded", callback)`
+   - `events.off("loaded", callback)`
+
+El `lifecycle` sería probablemente preferible para ahorrarse complejidad, pero `events` es correcto y reusable también.
+
+
+
