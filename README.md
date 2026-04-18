@@ -51,6 +51,7 @@ La siguiente especificación trata desde toolkit que hay que cubrir hasta especi
       - [Especificación 11.5: cómo exportar y reusar un valor asíncrono](#especificación-115-cómo-exportar-y-reusar-un-valor-asíncrono)
       - [Especificación 11.6: cuándo afecta la recursividad](#especificación-116-cuándo-afecta-la-recursividad)
       - [Especificación 11.7: cómo se conecta la api estática y la modular](#especificación-117-cómo-se-conecta-la-api-estática-y-la-modular)
+    - [Especificación 12: una recolección de basura global consciente](#especificación-12-una-recolección-de-basura-global-consciente)
 
 ## Cumplimiento específico
 
@@ -854,3 +855,39 @@ Me explico:
    - Sí hay alternativas, para escapar la expresión regular, haciendo por ejemplo: `Pak['require']`.
    - Pero no, es mejor usar `Pak.static` directamente que pensar en sobrepoblar más `Pak.modules` y bypasear al `Pak.require`, nono, no es buena idea.
 
+Profundizaremos en esto. Pero ahora un tema importantísimo.
+
+### Especificación 12: una recolección de basura global consciente
+
+En esta sección se habla de la `Globally Controled Garbage Collection Compliance`.
+
+El Garbage Collector de JavaScript V8 usa una técnica llamada **Mark-and-Sweep** o **Marcar-y-Barrer**.
+
+La idea básica es que:
+
+- Todo objeto que participe como:
+   - propiedad de `window`, `global` o cualquier otra variable estática global (`document`, `process`, etc.)
+   - variable usada en un `setTimeout`:
+      - este caso es el mismo que el anterior de globales estáticas, lo que pasa que no es accesible, el V8 tiene un `TimerQueue` y la función que le pasas se apendiza a este
+
+Y hay más cosas que aprender sobre el Garbage Collector. Pero rascando, no nos interesa liarnos con todo esto.
+
+La idea de recolección de basura consciente, a primeras es:
+
+> Los módulos que se registran, quedan accesibles, y los que se desregistran, quedan inaccesibles.
+
+Es decir, no hay magia, no hay Garbage Collection automática en tanto que nuestros módulos.
+
+Es un control explícito de las entradas y salidas.
+
+Lo importante es tener en cuenta que:
+
+> No ensuciamos más scopes que `Pak.modules`, `Pak.static` y `Pak.promise`.
+
+Si controlas lo que existe en estos 3, los otros leaks ya vendrían de referencias entre tu código vivo, pero el sistema de módulos no te va a hacer `memory leaks` porque siempre atacas a las mismas variables, que además mantendríamos como globales y únicas, para evitar malentendidos (entre scopes y `Pak`, hablo de la solución actual pero que cambiaré en breve) y que se escalen.
+
+El tema de la memoria preocupa como JS dev porque no hay mecanismos para controlar a penas. Pero igual es porque no deberían necesitarse, y de esto iba esta sección.
+
+Por tanto, dejamos la `Globally Controled Garbage Collection Compliance` más o menos delimitada aquí.
+
+Más adelante aparecerán casos de la versión `Locally`, y ahí sí que quizá tenemos que mirar las conductas del Garbage Collector, o clases de reflexión. Pero de primeras, esta es la solución real para no escalar el problema de la recolección de basura a nivel de módulos, que es el principal nivel que usamos para pivotar entre ellos mismos.
