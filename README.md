@@ -614,7 +614,73 @@ Pak.static.modulo = {
 
 De esta forma, vas indexando el acceso a las APIs rápidas, mientras mantienes el control de la estructura de dependencias en `compilation time`.
 
-Pero hay casos más complicados que un simple `signature collection`.
+**¡Interrupción!** Surge una duda en este punto:
+
+- ¿Y si los módulos inferiores quieren acceder al grande?
+- Por comodidad, por tener toda la API ya disponible y no tener que estar indicando cada modulito.
+
+Lo que puedes, y lo que no puedes hacer:
+
+- No puedes *hacer require del* superior directamente
+   - Te crearía recursividad, explicado en la [Especificación 11.6](#especificación-116-cuándo-afecta-la-recursividad).
+- Sí puedes *hacer require del* superior desde dentro de una función
+   - Síempre que esa función la utilices después del `load time` o, al menos, después de haber cargado al superior, directamente
+   - Es decir, si vas a hacerlo, puedes poner una `Promise` en el superior, y utilizarla en el inferior, en la función desde la cual quieres acceder.
+      - Sería el patrón preferido
+
+Ejemplo:
+
+```js
+// modulo-contenedor.js
+module.exports = {
+    contenido: Pak.require("modulo-contenido.js"),
+    otros: [],
+};
+```
+
+Esto no puedes hacerlo, porque o cargas uno antes, u otro:
+
+```js
+// modulo-contenido.js
+module.exports = (function () {
+    Pak.require("modulo-contenedor.js")
+})();
+```
+
+Pero esto sí puedes hacerlo, porque no estás llamándolo aún:
+
+```js
+// modulo-contenido.js
+module.exports = function () {
+    Pak.require("modulo-contenedor.js")
+};
+```
+
+Esto puedes llamarlo, o cuando haya temrminado `modulo-contenedor.js`, o en `load time` y no te calientas mucho más la cabeza.
+
+Pero todas estas `race conditions` son importantes, y de una forma u otra tienes que resolverlas.
+
+El `PakCompiler` te ordena las dependencias, pero si creas circularidad en las dependencias:
+
+- PakCompiler importará el que primero le toque, es decir, 
+- Tú, inconscientemente o no, siempre le estás indicando cuál tiene que cargar primero
+- Aunque haya dependencia mutua, hay 1 que tiene preferencia por cronología de carga
+
+Así que no es un misterio: puedes saber cuál está cargando antes realmente.
+
+Y eso, puede ser contraintuitivo, y crear estas `race conditions`.
+
+Sé que no parece un problema, que no te lo encuentras, y cargas todo normal.
+
+Pero en realidad, aquí ya estamos introduciendo 1 mala práctica con lo de:
+
+> Esto puedes llamarlo, o cuando haya temrminado `modulo-contenedor.js`, o en `load time` y no te calientas mucho más la cabeza.
+
+No deberías llamarlo en `load time` si sabes exactamente qué módulo necesitas previamente, porque estás consumiendo tiempo de la experiencia de usuario, precisamente.
+
+Lo correcto sería una `Promise`, y usar el `await`.
+
+Pero esto se explica mejor en las siguientes secciones.
 
 #### Especificación 11.1: caso donde módulo indexado es factoría de otro módulo indexado
 
