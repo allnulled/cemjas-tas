@@ -50,6 +50,7 @@ La siguiente especificación trata desde toolkit que hay que cubrir hasta especi
       - [Especificación 11.4: cuándo exportar o indexar una función asíncrona y cuándo una promesa](#especificación-114-cuándo-exportar-o-indexar-una-función-asíncrona-y-cuándo-una-promesa)
       - [Especificación 11.5: cómo exportar y reusar un valor asíncrono](#especificación-115-cómo-exportar-y-reusar-un-valor-asíncrono)
       - [Especificación 11.6: cuándo afecta la recursividad](#especificación-116-cuándo-afecta-la-recursividad)
+      - [Especificación 11.7: cómo se conecta la api estática y la modular](#especificación-117-cómo-se-conecta-la-api-estática-y-la-modular)
 
 ## Cumplimiento específico
 
@@ -840,4 +841,16 @@ Es un error de diseño, necesariamente un módulo tiene que saberse si va despu�
 Vamos, pienso.
 
 
+
+#### Especificación 11.7: cómo se conecta la api estática y la modular
+
+Todos los ejemplos que vengo dando son aplicables por igual a `Pak.static` y `Pak.modules`, que no `Pak.require`.
+
+Me explico:
+
+- En `Pak.static` no hay riesgo de cosas raras, y aprovechas que el objeto está vacío para indexar módulos rápidos.
+- En `Pak.modules` no pasa nada, pero a la que impliques a `Pak.require` sí, porque el compilador no va a encontrar el fichero.
+   - Si usas `Pak.modules` para dejar un módulo, tienes que usarlo también para cogerlo, porque con `Pak.require` en `compile time` si no, te lanzaría error.
+   - Sí hay alternativas, para escapar la expresión regular, haciendo por ejemplo: `Pak['require']`.
+   - Pero no, es mejor usar `Pak.static` directamente que pensar en sobrepoblar más `Pak.modules` y bypasear al `Pak.require`, nono, no es buena idea.
 
